@@ -66,6 +66,9 @@ class GrailsAuxGuiFrame {
             case "源域类":
                 changeSourceDomain()
                 break
+            case "保存设置":
+                grailsAuxDcoument.writeConfig()
+                break
 
         }
     }
@@ -73,39 +76,27 @@ class GrailsAuxGuiFrame {
     //工具栏
     def theToolBar = {
         swing.panel(layout: new BorderLayout(), constraints: BorderLayout.NORTH) {
-            toolBar(constraints: BorderLayout.NORTH) {
-                label(text: "操作流程：")
-                grailsAuxDcoument.guideStrings.each { e ->
-                    button(text: e, actionPerformed: { evt -> commonAction(evt) })
-                    label(text: "->")
+            vbox(constraints: BorderLayout.WEST) {
+                toolBar {
+                    label(text: "操作流程：")
+                    grailsAuxDcoument.guideStrings.each { e ->
+                        button(text: e, actionPerformed: { evt -> commonAction(evt) })
+                        label(text: "->")
+                    }
+                    separator()
+                    label(text: "当前操作:")
+                    status = label(text: "")
+                    separator()
+                    label(text: "当前工程:")
+                    currentProject = label(text: "")
                 }
-                separator()
-                label(text: "当前操作:")
-                status = label(text: "")
-                separator()
-                label(text: "当前工程:")
-                currentProject = label(text: "")
-                separator()
-                separator()
-                label(text: "输入源域类")
-                //sourceInput = textField(text: grailsAuxDcoument.sourceDomainName)
-                button(text: "源域类", actionPerformed: { evt -> commonAction(evt) })
-            }
-            toolBar(constraints: BorderLayout.SOUTH) {
-                label(text: "源：")
-                //sourceDomain = label(text: grailsAuxDcoument.sourceDomainName)
-                separator()
-                //sourceInstance = label(text: grailsAuxDcoument.sourceInstanceName)
-                separator()
-                separator()
-                label("请输入目标域类：")
-                //targetInput = textField(text: 'SystemMenu', columns: 20)
-                separator()
-                separator()
-                label(text: "目标：")
-                //targetDomain = label(text: "???")
-                separator()
-                //targetInstance = label(text: "???")
+                toolBar {
+                    label(text: "Hello1")
+                }
+                toolBar {
+                    label(text: "Hello2")
+                }
+
             }
         }
     }

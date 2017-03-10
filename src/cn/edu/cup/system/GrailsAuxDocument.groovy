@@ -9,14 +9,23 @@ class GrailsAuxDocument {
             "打开源工程目录",
             "打开目标工程目录",
             "输入目标工程名",
-            "拷贝文件"
+            "拷贝文件",
+            "保存设置"
     ]
 
-    def projectPath
+    def projectSetting = [
+            "projectPath":"",
+            "sourceProject": "",
+            "targetPath": "",
+            "targetProject": "",
+    ]
+
+    def getProjectPath() {
+        return projectSetting.projectPath
+    }
 
     def setProjectPath(String p) {
-        projectPath = p
-        writeConfig()
+        projectSetting.projectPath = p
     }
 
     def loadConfig() {
@@ -26,7 +35,9 @@ class GrailsAuxDocument {
             sf.withInputStream { stream->
                 if (stream) {
                     p.load(stream)
-                    projectPath = p.getProperty("projectPath")
+                    projectSetting.each() { e->
+                        projectSetting.put(e.key, p.getProperty(e.key))
+                    }
                 }
             }
         }
@@ -34,8 +45,12 @@ class GrailsAuxDocument {
 
     def writeConfig() {
         Properties p = new Properties()
-        p.setProperty("projectPath", projectPath)
         new File("GrailsCopyA.ini").withOutputStream { stream->
+            projectSetting.each() { e->
+                if (e.value) {
+                    p.setProperty(e.key, e.value)
+                }
+            }
             p.store(stream, "Grails Copy A")
         }
 
