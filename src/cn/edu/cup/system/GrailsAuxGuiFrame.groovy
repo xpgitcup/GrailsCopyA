@@ -6,6 +6,7 @@ import javax.swing.JFileChooser
 import javax.swing.JFrame
 import javax.swing.UIManager
 import java.awt.BorderLayout
+import java.awt.GridLayout
 import java.awt.Toolkit
 import java.awt.event.ActionEvent
 
@@ -26,7 +27,10 @@ class GrailsAuxGuiFrame {
 
     //------------------------------------------------------------------------------------------------------------------
     def status
-    def currentProject
+    def sourcePath
+    def sourceProject
+    def targetPath
+    def targetProject
     //------------------------------------------------------------------------------------------------------------------
 
     def grailsAuxDcoument
@@ -40,12 +44,27 @@ class GrailsAuxGuiFrame {
         def o = new JFileChooser()
         o.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY)
         if (grailsAuxDcoument.projectPath) {
-            o.setCurrentDirectory(new File(grailsAuxDcoument.projectPath))
+            o.setCurrentDirectory(new File("${grailsAuxDcoument.projectPath}/${grailsAuxDcoument.sourceProject}"))
         }
         def ok = o.showOpenDialog(null)
         if (ok == JFileChooser.APPROVE_OPTION) {
-            grailsAuxDcoument.projectPath = o.getSelectedFile().absolutePath
-            currentProject.text = grailsAuxDcoument.projectPath
+            grailsAuxDcoument.projectPath = o.getSelectedFile().parent
+            grailsAuxDcoument.sourceProject = o.getSelectedFile().name
+            sourcePath.text = grailsAuxDcoument.projectPath
+            sourceProject.text = grailsAuxDcoument.sourceProject
+        }
+    }
+
+    def openTargetPath = {
+        def o = new JFileChooser()
+        o.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY)
+        if (grailsAuxDcoument.targetPath) {
+            o.setCurrentDirectory(new File(grailsAuxDcoument.targetPath))
+        }
+        def ok = o.showOpenDialog(null)
+        if (ok == JFileChooser.APPROVE_OPTION) {
+            grailsAuxDcoument.targetPath = o.getSelectedFile().path
+            targetPath.text = grailsAuxDcoument.targetPath
         }
     }
     //------------------------------------------------------------------------------------------------------------------
@@ -57,8 +76,8 @@ class GrailsAuxGuiFrame {
             case "打开源工程目录":
                 openProjectPath()
                 break
-            case "输入目标域类":
-                inputTargetDomain()
+            case "打开目标工程目录":
+                openTargetPath()
                 break
             case "生成目标文档":
                 createTargetFile()
@@ -75,28 +94,30 @@ class GrailsAuxGuiFrame {
     //------------------------------------------------------------------------------------------------------------------
     //工具栏
     def theToolBar = {
-        swing.panel(layout: new BorderLayout(), constraints: BorderLayout.NORTH) {
-            vbox(constraints: BorderLayout.WEST) {
-                toolBar {
-                    label(text: "操作流程：")
-                    grailsAuxDcoument.guideStrings.each { e ->
-                        button(text: e, actionPerformed: { evt -> commonAction(evt) })
-                        label(text: "->")
-                    }
-                    separator()
-                    label(text: "当前操作:")
-                    status = label(text: "")
-                    separator()
-                    label(text: "当前工程:")
-                    currentProject = label(text: "")
+        swing.panel(layout: new GridLayout(3,1), constraints: BorderLayout.NORTH) {
+            toolBar {
+                label(text: "操作流程：")
+                grailsAuxDcoument.guideStrings.each { e ->
+                    button(text: e, actionPerformed: { evt -> commonAction(evt) })
+                    label(text: "->")
                 }
-                toolBar {
-                    label(text: "Hello1")
-                }
-                toolBar {
-                    label(text: "Hello2")
-                }
-
+                separator()
+                label(text: "当前操作:")
+                status = label(text: "")
+            }
+            toolBar {
+                label(text: "源目录：")
+                sourcePath = label(text: "Hello1")
+                separator()
+                label(text: "源工程：")
+                sourceProject = label(text: "??")
+            }
+            toolBar {
+                label(text: "目标目录：")
+                targetPath = label(text: "Hello2")
+                separator()
+                label(text: "目标工程：")
+                targetProject = textField(text: "")
             }
         }
     }

@@ -28,6 +28,22 @@ class GrailsAuxDocument {
         projectSetting.projectPath = p
     }
 
+    def getSourceProject() {
+        return projectSetting.sourceProject
+    }
+
+    def setSourceProject(String p) {
+        projectSetting.sourceProject = p
+    }
+
+    def getTargetPath() {
+        return projectSetting.targetPath
+    }
+
+    def setTargetPath(String p) {
+        projectSetting.targetPath = p
+    }
+
     def loadConfig() {
         Properties p = new Properties()
         def sf = new File("GrailsCopyA.ini")
