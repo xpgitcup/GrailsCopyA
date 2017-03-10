@@ -2,6 +2,7 @@ package cn.edu.cup.system
 
 import groovy.swing.SwingBuilder
 
+import javax.swing.JFileChooser
 import javax.swing.JFrame
 import javax.swing.UIManager
 import java.awt.BorderLayout
@@ -24,20 +25,36 @@ class GrailsAuxGuiFrame {
     int Y = (screenSize.height - HEIGHT) / 2
 
     //------------------------------------------------------------------------------------------------------------------
+    def status
+    def currentProject
+    //------------------------------------------------------------------------------------------------------------------
+
     def grailsAuxDcoument
 
     //------------------------------------------------------------------------------------------------------------------
     GrailsAuxGuiFrame(GrailsAuxDocument document) {
         grailsAuxDcoument = document
     }
-
+    //------------------------------------------------------------------------------------------------------------------
+    def openProjectPath = {
+        def o = new JFileChooser()
+        o.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY)
+        if (grailsAuxDcoument.projectPath) {
+            o.setCurrentDirectory(new File(grailsAuxDcoument.projectPath))
+        }
+        def ok = o.showOpenDialog(null)
+        if (ok == JFileChooser.APPROVE_OPTION) {
+            grailsAuxDcoument.projectPath = o.getSelectedFile().absolutePath
+            currentProject.text = grailsAuxDcoument.projectPath
+        }
+    }
     //------------------------------------------------------------------------------------------------------------------
     def commonAction(ActionEvent evt) {
         def actionName = evt.actionCommand
         println(actionName)
         status.text = actionName
         switch (actionName) {
-            case "打开工程目录":
+            case "打开源工程目录":
                 openProjectPath()
                 break
             case "输入目标域类":

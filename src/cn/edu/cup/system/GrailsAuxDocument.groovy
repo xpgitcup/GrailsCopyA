@@ -12,4 +12,5 @@ class GrailsAuxDocument {
             "拷贝文件"
     ]
 
+    def projectPath
 }
