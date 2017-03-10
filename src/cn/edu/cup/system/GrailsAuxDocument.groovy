@@ -13,4 +13,36 @@ class GrailsAuxDocument {
     ]
 
     def projectPath
+
+    def setProjectPath(String p) {
+        projectPath = p
+        writeConfig()
+    }
+
+    def loadConfig() {
+        Properties p = new Properties()
+        def sf = new File("GrailsCopyA.ini")
+        if (sf.exists()) {
+            sf.withInputStream { stream->
+                if (stream) {
+                    p.load(stream)
+                    projectPath = p.getProperty("projectPath")
+                }
+            }
+        }
+    }
+
+    def writeConfig() {
+        Properties p = new Properties()
+        p.setProperty("projectPath", projectPath)
+        new File("GrailsCopyA.ini").withOutputStream { stream->
+            p.store(stream, "Grails Copy A")
+        }
+
+    }
+
+    GrailsAuxDocument() {
+        loadConfig()
+    }
+
 }

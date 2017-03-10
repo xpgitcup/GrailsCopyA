@@ -19,7 +19,7 @@ class GrailsAuxGuiFrame {
     def toolkit = Toolkit.getDefaultToolkit()
     def screenSize = toolkit.getScreenSize()
 
-    def WIDTH = 1200
+    def WIDTH = 1024
     def HEIGHT = 768
     int X = (screenSize.width - WIDTH) / 2
     int Y = (screenSize.height - HEIGHT) / 2
