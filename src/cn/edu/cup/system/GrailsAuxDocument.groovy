@@ -13,6 +13,12 @@ class GrailsAuxDocument {
             "保存设置"
     ]
 
+    def ignore = [
+            ".git",
+            "build",
+
+    ]
+
     def projectSetting = [
             "sourcePath":"",
             "sourceProject": "",
