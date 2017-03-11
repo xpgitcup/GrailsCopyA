@@ -31,6 +31,7 @@ class GrailsAuxGuiFrame {
     def sourceProject
     def targetPath
     def targetProject
+    def console
     //------------------------------------------------------------------------------------------------------------------
 
     def grailsAuxDcoument
@@ -43,14 +44,14 @@ class GrailsAuxGuiFrame {
     def openProjectPath = {
         def o = new JFileChooser()
         o.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY)
-        if (grailsAuxDcoument.projectPath) {
-            o.setCurrentDirectory(new File("${grailsAuxDcoument.projectPath}/${grailsAuxDcoument.sourceProject}"))
+        if (grailsAuxDcoument.sourcePath) {
+            o.setCurrentDirectory(new File("${grailsAuxDcoument.sourcePath}/${grailsAuxDcoument.sourceProject}"))
         }
         def ok = o.showOpenDialog(null)
         if (ok == JFileChooser.APPROVE_OPTION) {
-            grailsAuxDcoument.projectPath = o.getSelectedFile().parent
+            grailsAuxDcoument.sourcePath = o.getSelectedFile().parent
             grailsAuxDcoument.sourceProject = o.getSelectedFile().name
-            sourcePath.text = grailsAuxDcoument.projectPath
+            sourcePath.text = grailsAuxDcoument.sourcePath
             sourceProject.text = grailsAuxDcoument.sourceProject
         }
     }
@@ -67,6 +68,14 @@ class GrailsAuxGuiFrame {
             targetPath.text = grailsAuxDcoument.targetPath
         }
     }
+
+    def inputTargetProject = {
+        grailsAuxDcoument.targetProject = targetProject.text
+    }
+
+    def copyFiles() {
+        
+    }
     //------------------------------------------------------------------------------------------------------------------
     def commonAction(ActionEvent evt) {
         def actionName = evt.actionCommand
@@ -79,8 +88,8 @@ class GrailsAuxGuiFrame {
             case "打开目标工程目录":
                 openTargetPath()
                 break
-            case "生成目标文档":
-                createTargetFile()
+            case "输入目标工程名":
+                inputTargetProject()
                 break
             case "源域类":
                 changeSourceDomain()
@@ -107,21 +116,27 @@ class GrailsAuxGuiFrame {
             }
             toolBar {
                 label(text: "源目录：")
-                sourcePath = label(text: "Hello1")
+                sourcePath = label(text: "")
                 separator()
                 label(text: "源工程：")
-                sourceProject = label(text: "??")
+                sourceProject = label(text: "")
             }
             toolBar {
                 label(text: "目标目录：")
-                targetPath = label(text: "Hello2")
+                targetPath = label(text: "")
                 separator()
                 label(text: "目标工程：")
-                targetProject = textField(text: "")
+                targetProject = textField(text: grailsAuxDcoument.targetProject)
             }
         }
     }
 
+    //主面板
+    def mainPanel = {
+        swing.panel(layout: new GridLayout(1,1), constraints: BorderLayout.CENTER) {
+            console = textArea()
+        }
+    }
     //------------------------------------------------------------------------------------------------------------------
     def run() {
         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName())
@@ -130,7 +145,7 @@ class GrailsAuxGuiFrame {
                 location: [X, Y],
                 defaultCloseOperation: javax.swing.WindowConstants.DISPOSE_ON_CLOSE) {
             theToolBar()
-            //mainTabPanel()
+            mainPanel()
         }
         frame.setVisible(true)
     }

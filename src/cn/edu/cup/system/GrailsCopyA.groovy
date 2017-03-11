@@ -5,11 +5,8 @@ package cn.edu.cup.system
  */
 class GrailsCopyA {
     static void main(String[] args) {
-        println("Grails 辅助工具.")
+        println("Grails 辅助拷贝工具.")
 
-        //Document document = new Document()
-        //def guiFrame = new GuiFrame(document)
-        //guiFrame.run()
         def document = new GrailsAuxDocument()
         def grailsAuxGuiFrame = new GrailsAuxGuiFrame(document)
         grailsAuxGuiFrame.run()

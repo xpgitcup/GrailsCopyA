@@ -14,18 +14,18 @@ class GrailsAuxDocument {
     ]
 
     def projectSetting = [
-            "projectPath":"",
+            "sourcePath":"",
             "sourceProject": "",
             "targetPath": "",
             "targetProject": "",
     ]
 
-    def getProjectPath() {
-        return projectSetting.projectPath
+    def getSourcePath() {
+        return projectSetting.sourcePath
     }
 
-    def setProjectPath(String p) {
-        projectSetting.projectPath = p
+    def setSourcePath(String p) {
+        projectSetting.sourcePath = p
     }
 
     def getSourceProject() {
@@ -42,6 +42,14 @@ class GrailsAuxDocument {
 
     def setTargetPath(String p) {
         projectSetting.targetPath = p
+    }
+
+    def getTargetProject() {
+        return projectSetting.targetProject
+    }
+
+    def setTargetProject(String p) {
+        projectSetting.targetProject = p
     }
 
     def loadConfig() {
