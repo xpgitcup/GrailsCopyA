@@ -74,7 +74,19 @@ class GrailsAuxGuiFrame {
     }
 
     def copyFiles() {
-        
+        def s = "${grailsAuxDcoument.sourcePath}/${grailsAuxDcoument.sourceProject}"
+        def t = "${grailsAuxDcoument.targetPath}/${grailsAuxDcoument.targetProject}"
+        def sf = new File(s)
+        if (sf.exists()) {
+            status.text = "${s}--开始拷贝..."
+            console.text = ""
+            sf.listFiles().each { e->
+                println("${e.name} ${e.isDirectory()}")
+                console.append("${e.name} -- ${e.isDirectory()}\r\n")
+            }
+        } else {
+            status.text = "${s}目录不存在！"
+        }
     }
     //------------------------------------------------------------------------------------------------------------------
     def commonAction(ActionEvent evt) {
@@ -91,8 +103,8 @@ class GrailsAuxGuiFrame {
             case "输入目标工程名":
                 inputTargetProject()
                 break
-            case "源域类":
-                changeSourceDomain()
+            case "拷贝文件":
+                copyFiles()
                 break
             case "保存设置":
                 grailsAuxDcoument.writeConfig()
